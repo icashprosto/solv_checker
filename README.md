@@ -3,7 +3,7 @@
 
 ## Шаг 1: Клонировать репозиторий с GitHub
 
-1. Перейдите в репозиторий проекта на GitHub, например [https://github.com/yourusername/solv-checker](https://github.com/yourusername/solv-checker).
+1. Перейдите в репозиторий проекта на GitHub, например [https://github.com/yourusername/solv-checker](https://github.com/icashprosto/solv-checker).
 
 2. Нажмите на кнопку **"Code"** и скопируйте URL репозитория (например, HTTPS или SSH).
 
