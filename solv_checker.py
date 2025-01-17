@@ -1,7 +1,6 @@
 import requests
 import time
 import random
-#import os
 
 # Конфигурация
 url = "https://sf.sft-api.com/graphql"
@@ -12,10 +11,6 @@ headers = {
     "Referer": "https://solv.foundation/",
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
 }
-
-# Пути к файлам
-# WALLETS_FILE = os.path.join("config", "data", "wallets_solv.txt")
-# RESULT_FILE = os.path.join("config", "data", "result_solv.txt")
 
 WALLETS_FILE = "wallets_solv.txt"
 RESULT_FILE = "result_solv.txt"
@@ -57,6 +52,10 @@ def main():
     with open(WALLETS_FILE, "r") as wallets_file:  # Используем WALLETS_FILE
         wallets = [line.strip() for line in wallets_file if line.strip()]
 
+    total_tokens = 0  # Переменная для подсчета общей суммы полученных токенов
+    wallets_with_tokens = 0  # Счетчик кошельков, которые получили токены
+    wallets_without_tokens = 0  # Счетчик кошельков, которые не получили токены
+
     # Открытие файла для записи результатов
     with open(RESULT_FILE, "w") as result_file:  # Используем RESULT_FILE
         for wallet in wallets:
@@ -70,8 +69,25 @@ def main():
             result_file.write(result_line)
             print(f"Результат: {result_line.strip()}")
 
+            # Подсчитываем токены и кошельки
+            if reward != "No stages info" and reward != "Error":
+                try:
+                    tokens = float(reward)  # Предполагаем, что reward — это числовое значение токенов
+                    total_tokens += tokens
+                    wallets_with_tokens += 1
+                except ValueError:
+                    wallets_without_tokens += 1  # Если не удается конвертировать в число, считаем как не получивший токены
+            else:
+                wallets_without_tokens += 1
+
             # Пауза 3–5 секунд
-            time.sleep(random.uniform(3, 5))
+            time.sleep(random.uniform(5, 15))
+
+    # Вывод результатов в консоль
+    print("\n--- Результаты ---")
+    print(f"Общая сумма полученных токенов: {total_tokens}")
+    print(f"Количество кошельков с токенами: {wallets_with_tokens}")
+    print(f"Количество кошельков без токенов: {wallets_without_tokens}")
 
 if __name__ == "__main__":
     main()
